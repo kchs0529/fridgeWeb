@@ -3,6 +3,8 @@ const cors    = require("cors");
 const mysql   = require("mysql");   
 const app     = express();
 const PORT    = 3000; // 포트번호 설정
+const BluetoothSerialPort = require('bluetooth-serial-port').BluetoothSerialPort;
+const serial = new BluetoothSerialPort();
 
 // MySQL 연결
 const db = mysql.createPool({
@@ -46,8 +48,8 @@ app.post('/saveData', (req, res) => {
         }
         console.log('데이터가 성공적으로 저장되었습니다.');
         res.status(200).json({ message: "데이터 저장 성공" });
+        });
     });
-});
 
 //데이터 가져오기
 app.get('/getDataByDate', (req, res) => {
@@ -100,6 +102,28 @@ app.delete('/deleteData', (req, res) => {
         res.status(200).json({ message: "데이터 삭제 성공" });
     });
 });
+
+// 블루투스 디바이스 검색 및 연결
+serial.on('found', function(address, name) {
+    serial.findSerialPortChannel(address, function(channel) {
+        serial.connect(address, channel, function() {
+            console.log('블루투스 연결 성공:', name);
+
+            // 데이터를 수신하고 데이터베이스에 저장
+            serial.on('data', function(data) {
+                const receivedData = data.toString();
+                console.log('수신된 데이터:', receivedData);
+
+                // 여기에 데이터 파싱 및 데이터베이스 저장 로직 추가 ...
+            });
+
+        }, function () {
+            console.log('블루투스 연결을 실패했습니다.');
+        });
+    });
+});
+
+serial.inquire();
 
 // 서버 연결 시 발생
 app.listen(PORT, () => {
