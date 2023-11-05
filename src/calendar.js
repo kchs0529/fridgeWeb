@@ -63,51 +63,52 @@ class Calendar extends React.Component {
         this.setState({ isOutputOpen: false });
     }
 
-    // 데이터 저장 함수
     saveData() {
-        // 현재 날짜를 얻기
-        const now = new Date();
-        // 로컬 시간대의 연, 월, 일을 얻기 위해 toLocaleDateString 사용
-        const selectedDate = now.toLocaleDateString('ko-KR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        }).replace(/. /g, '-').slice(0, -1); // 결과 예: '2023-11-04'
-        const expirationDate = now.toLocaleDateString('ko-KR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        }).replace(/. /g, '-').slice(0, -1); // 결과 예: '2023-11-04'
-        // 입력된 데이터
+        const { productName, categoryCode, selectedDate, expirationDate } = this.state;
+        //제품명이 비어있는지 확인
+        if (!productName.trim()) {
+            alert("제품명을 입력해주세요.");
+            return;
+        }
+        // categoryCode가 유효한 숫자인지 확인합니다.
+        const categoryCodeNumber = parseInt(categoryCode, 10);
+        if (isNaN(categoryCodeNumber) || categoryCodeNumber < 0) {
+            alert("분류 코드는 0보다 커야 합니다.");
+            return;
+        }
+        const expirationDateObject = new Date(expirationDate);
+        const selectedDateObject = new Date(selectedDate);
+
+        // 유통기한이 선택된 날짜보다 이전인지 확인합니다.
+        if (expirationDateObject < selectedDateObject) {
+            alert("유통기한이 지났습니다.");
+            return;
+        }
+    
+        // 저장할 데이터 객체를 생성합니다.
         const data = {
-            productName: this.state.productName,
-            expirationDate: this.state.expirationDate,
-            categoryCode: parseInt(this.state.categoryCode, 10),
-            selectedDate: selectedDate
+            productName,
+            expirationDate, // 상태에서 직접 추출한 값을 사용합니다.
+            categoryCode: categoryCodeNumber,
+            selectedDate, // 상태에서 직접 추출한 값을 사용합니다.
         };
-
-        if (isNaN(data.categoryCode) || data.categoryCode < 0) {
-            // 분류 코드가 유효한 숫자가 아니거나 1보다 작으면 에러 메시지 출력
-            alert("분류 코드는 1보다 커야합니다");
-            return; // 저장 프로세스 중단
-          }
-
-        // POST 요청을 보내서 데이터를 서버로 전송
-        fetch('http://localhost:3000/saveData', { 
+    
+        // POST 요청을 보내서 데이터를 서버로 전송합니다.
+        fetch('http://localhost:3000/saveData', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
         })
-        .then((response) => response.json())
-        .then((result) => {
+        .then(response => response.json())
+        .then(result => {
             console.log(result); // 성공 또는 실패 메시지를 콘솔에 출력
             alert("저장되었습니다");
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('데이터 저장 오류:', error);
-            alert("저장에 실패하였습니다.")
+            alert("저장에 실패하였습니다.");
         });
     }
 
@@ -177,7 +178,8 @@ class Calendar extends React.Component {
 
         let tableRows;
         if (Array.isArray(this.state.productData)) {
-            tableRows = this.state.productData.map((item, index) => (
+            tableRows = this.state.productData
+            .map((item, index) => (
                 <tr key={item.id}>
                     <td>{index + 1}</td> {/* 번호 */}
                     <td>{item.productName}</td> {/* 제품명 */}
