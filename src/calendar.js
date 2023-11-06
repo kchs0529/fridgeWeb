@@ -196,7 +196,7 @@ class Calendar extends React.Component {
                 </tr>
             ));
         } else {
-            tableRows = null; // 혹은 다른 기본값을 설정할 수 있습니다.
+            tableRows = null; // 혹은 다른 기본값을 설정
         }
 
         
