@@ -42,14 +42,14 @@ class Calendar extends React.Component {
             categoryCode: ""
         });
     
-        const url= `http://localhost:3000/getDataByDate?selectedDate=${formattedDate}`;
+        const url= `/getDataByDate?selectedDate=${formattedDate}`;
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
                 this.setState({ productData: data || [] });
             })
             .catch((error) => {
-                console.error('데이터 조회 오류:', error);
+                //console.log('데이터 조회 오류:', error);
         });
     }
 
@@ -92,11 +92,12 @@ class Calendar extends React.Component {
             categoryCode: categoryCodeNumber,
             selectedDate, // 상태에서 직접 추출한 값을 사용합니다.
         };
-    
+        
         // POST 요청을 보내서 데이터를 서버로 전송합니다.
-        fetch('http://localhost:3000/saveData', {
+        fetch('/saveData', {
             method: 'POST',
             headers: {
+                Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
@@ -108,7 +109,7 @@ class Calendar extends React.Component {
         })
         .catch(error => {
             console.error('데이터 저장 오류:', error);
-            alert("저장에 실패하였습니다.");
+            alert("저장에 실패하였습니다."+error);
         });
     }
 
@@ -119,7 +120,7 @@ class Calendar extends React.Component {
         };
     
         // 서버에 DELETE 요청 보내기
-        fetch('http://localhost:3000/deleteData', {
+        fetch('/deleteData', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

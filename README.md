@@ -1,70 +1,25 @@
-# Getting Started with Create React App
+## 실행 방법
+1.server 폴더로 들어가 node server 서버실행(포트 3000)
+2.fridgeweb 폴더에서 npm start->3000번 포트가 실행되고 있으므로 y를 눌러 3001번 포트에서 실행
+3.fridgeApp 폴더로 들어가 npx expo start 
+4.expo go앱이 있어야하며 expo go 앱을 실행 후 qr코드를 스캔하거나 metro waiting on ~~~~~~ ~부분의 url을 복사하여 붙여넣으면 앱이 실행된다.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+주의사항
+git clone으로 파일들을 다운받았다면 npm install을 사용하여 컴포넌트들을 설치 할 것
+server.js의 Mysql연결 부분에 들어가는 내용의 자신의 데이터베이스에 맞춰서 저장할 것
 
-## Available Scripts
+앱실행시 WebView의 source 속성에 들어가있는 uri를 자신의 ipv4:3001로 변경 후 실행 할 것
 
-In the project directory, you can run:
+꼭 노트북(컴퓨터)와 같은 와이파이 환경에 있는 앱에서 실행 할 것
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 문제점 및 해결 방안
+1. 데이터 저장 시 저장에 실패하는 경우
+데이터 저장 오류: SyntaxError: Unexpected token 'P', "Proxy erro"... is not valid JSON
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+해결 방안 : 서버를 실행하지 않았을 시 생겼던 오류 서버를 먼저 키면 생기지 않는다.
 
-### `npm test`
+2. CORS (Cross-Origin Resource Sharing) 문제
+react-native webview를 활용하여 앱으로 웹을 실행했을때 cors로 인해 데이터 저장,조회,삭제 등 PORT나 GET이 실행 되지 않는 문제,React 앱이 데이터를 가져 오려는 서버 또는 API와 다른 도메인 또는 포트에서 실행 중인 경우 생길 수 있다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+해결 방안 : package.json에 "proxy" : "http://localhost:3000"를 추가한다. React 앱이 API 서버로의 요청을 보낼 때, 요청이 자동으로 로컬 서버로 라우팅되어 CORS 문제를 해결
