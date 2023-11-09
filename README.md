@@ -1,16 +1,16 @@
 ## 실행 방법
-1.server 폴더로 들어가 node server 서버실행(포트 3000)
-2.fridgeweb 폴더에서 npm start->3000번 포트가 실행되고 있으므로 y를 눌러 3001번 포트에서 실행
-3.fridgeApp 폴더로 들어가 npx expo start 
-4.expo go앱이 있어야하며 expo go 앱을 실행 후 qr코드를 스캔하거나 metro waiting on ~~~~~~ ~부분의 url을 복사하여 붙여넣으면 앱이 실행된다.
+1. server 폴더로 들어가 node server 서버실행(포트 3000)
+2. fridgeweb 폴더에서 npm start->3000번 포트가 실행되고 있으므로 y를 눌러 3001번 포트에서 실행
+3. fridgeApp 폴더로 들어가 npx expo start 
+4. expo go앱이 있어야하며 expo go 앱을 실행 후 qr코드를 스캔하거나 metro waiting on ~~~~~~ ~부분의 url을 복사하여 붙여넣으면 앱이 실행된다.
 
-주의사항
-git clone으로 파일들을 다운받았다면 npm install을 사용하여 컴포넌트들을 설치 할 것
-server.js의 Mysql연결 부분에 들어가는 내용의 자신의 데이터베이스에 맞춰서 저장할 것
+## 주의사항
+1. git clone으로 파일들을 다운받았다면 npm install을 사용하여 컴포넌트들을 설치 할 것
+2. server.js의 Mysql연결 부분에 들어가는 내용의 자신의 데이터베이스에 맞춰서 저장할 것
 
-앱실행시 WebView의 source 속성에 들어가있는 uri를 자신의 ipv4:3001로 변경 후 실행 할 것
+3. 앱실행시 WebView의 source 속성에 들어가있는 uri를 자신의 ipv4:3001로 변경 후 실행 할 것
 
-꼭 노트북(컴퓨터)와 같은 와이파이 환경에 있는 앱에서 실행 할 것
+4. 꼭 노트북(컴퓨터)와 같은 와이파이 환경에 있는 앱에서 실행 할 것
 
 
 ## 문제점 및 해결 방안
