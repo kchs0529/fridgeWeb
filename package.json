@@ -16,6 +16,7 @@
     "react-calendar": "^4.6.1",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
+    "react-native-webview": "^13.6.2",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
