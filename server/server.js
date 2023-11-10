@@ -103,6 +103,47 @@ app.delete('/deleteData', (req, res) => {
     });
 });
 
+//검색
+app.get('/getDataBySearch', (req, res) => {
+    const { searchOption, searchTerm } = req.query;
+    let sql = "";
+    
+    switch (searchOption) {
+      case "productName":
+        sql = "SELECT id, productName, expirationDate, categoryCode FROM products WHERE productName LIKE ?";
+        break;
+      case "expirationDate":
+        sql = "SELECT id, productName, expirationDate, categoryCode FROM products WHERE expirationDate LIKE ?";
+        break;
+      case "categoryCode":
+        // 숫자로 저장된 카테고리 코드를 정확히 일치하는 경우 검색
+        sql = "SELECT id, productName, expirationDate, categoryCode FROM products WHERE categoryCode = ?";
+        break;
+      default:
+        return res.status(400).json({ error: "잘못된 검색 옵션입니다." });
+    }
+    
+    const searchValue = (searchOption === "categoryCode") ? parseInt(searchTerm) : `%${searchTerm}%`;
+    
+    db.query(sql, [searchValue], (err, result) => {
+      if (err) {
+        console.error('검색 오류:', err);
+        return res.status(500).json({ error: "검색에 실패했습니다." });
+      }
+    
+      const formattedResult = result.map(item => ({
+        id: item.id,
+        productName: item.productName,
+        expirationDate: new Date(item.expirationDate).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' })
+            .replace(/\. /g, '-').replace(/\.$/, ''),
+        categoryCode: item.categoryCode
+      }));
+    
+      res.status(200).json(formattedResult);
+    });
+  });
+  
+
 // 한국 시간대로 설정된 오늘 날짜를 가져오는 함수
 function getKoreanDate() {
     const now = new Date();

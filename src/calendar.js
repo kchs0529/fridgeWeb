@@ -1,6 +1,5 @@
 import React,{Component} from "react";
 
-
 class Calendar extends React.Component {
     constructor(props) {
         super(props);
@@ -204,7 +203,7 @@ class Calendar extends React.Component {
 
         return (<div style={{ display: "contents" }}>
             <div className="table-container">
-                <table id="calendartable">
+                <table className="calendartable">
                     <thead>
                         <tr key="month">
                             <th colSpan="1">
@@ -258,7 +257,7 @@ class Calendar extends React.Component {
                 {this.state.isOutputOpen && (
                 <div className="output-container">
                     <h3>제품 정보</h3>
-                    <table>
+                    <table className="output-table">
                     <thead>
                         <tr>
                         <th>번호</th>
