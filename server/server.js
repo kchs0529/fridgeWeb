@@ -51,7 +51,29 @@ app.post('/saveData', (req, res) => {
         });
     });
 
-//데이터 가져오기
+//모든 데이터 가져오기
+app.get('/getAllData', (req, res) => {
+    const sql = "SELECT productName, expirationDate, categoryCode FROM products";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error('데이터 조회 오류:', err);
+            return res.status(500).json({ error: "데이터를 가져오는 데 실패했습니다." });
+        }
+        console.log('데이터 조회 성공');
+
+        // expirationDate를 한국 시간대로 변환
+        const formattedResult = result.map(item => ({
+            productName: item.productName,
+            expirationDate: new Date(item.expirationDate).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' })
+                .replace(/\. /g, '-').replace(/\.$/, ''),
+            categoryCode: item.categoryCode
+        }));
+
+        res.status(200).json(formattedResult);
+    });
+});
+
+//선택한 데이터 가져오기
 app.get('/getDataByDate', (req, res) => {
     const { selectedDate } = req.query; // 쿼리 매개변수로 받은 선택한 날짜
     const sql = "SELECT id,productName, expirationDate, categoryCode FROM products WHERE selectedDate = ?";
@@ -75,6 +97,8 @@ app.get('/getDataByDate', (req, res) => {
         res.status(200).json(formattedResult);
     });
 });
+
+
 
 //삭제
 app.delete('/deleteData', (req, res) => {

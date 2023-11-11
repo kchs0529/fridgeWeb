@@ -17,7 +17,7 @@ const SearchResults = () => {
   }
 
   return (
-    <div>
+    <div className='search-resultcontainer'>
       <h2>검색 결과</h2>
       <table>
         <thead>
