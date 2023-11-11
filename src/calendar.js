@@ -15,6 +15,18 @@ class Calendar extends React.Component {
         }
         this.handleMonthChange = this.handleMonthChange.bind(this);
         this.handleYearChange = this.handleYearChange.bind(this);
+        this.inputContainerRef = React.createRef();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        // isInputOpen 상태가 변경되면서 true가 되면 스크롤을 이동합니다.
+        if (this.state.isInputOpen && !prevState.isInputOpen) {
+          if (this.inputContainerRef.current) {
+            this.inputContainerRef.current.scrollIntoView({
+              behavior: "smooth",
+            });
+          }
+        }
     }
 
     handleYearChange(change) {
@@ -30,6 +42,8 @@ class Calendar extends React.Component {
     }
 
     
+
+    //클릭
     handleDateClick(clickedDate) {
         const selectedDate = new Date(clickedDate);
         const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
@@ -41,6 +55,12 @@ class Calendar extends React.Component {
             categoryCode: ""
         });
     
+        if (this.inputContainerRef.current) {
+            this.inputContainerRef.current.scrollIntoView({
+              behavior: "smooth",
+            });
+        }
+
         const url= `/getDataByDate?selectedDate=${formattedDate}`;
         fetch(url)
             .then((response) => response.json())
@@ -51,6 +71,8 @@ class Calendar extends React.Component {
                 //console.log('데이터 조회 오류:', error);
         });
     }
+
+    
 
     // 입력 창을 닫는 함수
     closeInput() {
@@ -230,7 +252,7 @@ class Calendar extends React.Component {
                 </table>
             </div>
             {this.state.isInputOpen && (
-                    <div className="input-container">
+                    <div ref={this.inputContainerRef} className="input-container">
                         <h3>날짜: {this.state.selectedDate}</h3>
                         <input 
                             type="text"
