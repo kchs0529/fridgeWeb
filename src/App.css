@@ -258,14 +258,6 @@ padding:1px 1px;
     background-color: #daedff;
 }
 
-/* .button
-{
-    background-color: #1c0695bf;
-    color: white;
-    border: none;
-    padding: 3px;
-    cursor: pointer;
-} */
 @media screen and (max-width: 360px) {
 #Calendar
 {
@@ -315,6 +307,7 @@ h3 {
   text-align: center; /* 가로 가운데 정렬 */
 }
 
+
 button {
   padding: 5px 10px;
   margin-left: 10px;
@@ -338,4 +331,8 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.allData-container td{
+  color: black;
 }

@@ -164,6 +164,34 @@ class Calendar extends React.Component {
             alert("데이터 삭제에 실패하였습니다.");
         });
     }
+
+    //전체 삭제 버튼
+    handleDeleteAll() {
+        const { selectedDate } = this.state;
+      
+        // 서버에 선택된 날짜의 모든 데이터를 삭제 요청 보내기
+        fetch('/deleteAllDataByDate', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ selectedDate }),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result); // 성공 또는 실패 처리
+            if (result.message === '데이터 삭제 성공') {
+              alert('선택된 날짜의 데이터가 모두 삭제되었습니다.');
+              this.closeOutput(); // 삭제 후 출력 창 닫기
+            } else {
+              alert('데이터 삭제에 실패하였습니다.');
+            }
+          })
+          .catch((error) => {
+            console.error('데이터 삭제 오류:', error);
+            alert('데이터 삭제에 실패하였습니다.');
+          });
+      }
     
     render() {
         var currentDate = new Date(this.state.currentDate);
@@ -203,18 +231,17 @@ class Calendar extends React.Component {
             tableRows = this.state.productData
             .map((item, index) => (
                 <tr key={item.id}>
-                    <td>{index + 1}</td> {/* 번호 */}
+                    <td style={{ color: 'black' }}>{index + 1}</td> {/* 번호 */}
                     <td>{item.productName}</td> {/* 제품명 */}
                     <td>{item.expirationDate}</td> {/* 유통기한 */}
                     <td>{item.categoryCode}</td> {/* 분류코드 */}
                     <td>
                     <button
-                        onClick={() => this.handleDataDelete(item.id)}
-                        
+                        onClick={() => this.handleDataDelete(item.id)} 
                     >
                         삭제
                     </button>
-        </td>
+                    </td>
                 </tr>
             ));
         } else {
@@ -277,25 +304,24 @@ class Calendar extends React.Component {
                     </div>
                 )}
                 {this.state.isOutputOpen && (
-                <div className="output-container">
-                    <h3>제품 정보</h3>
-                    <table className="output-table">
-                    <thead>
-                        <tr>
-                        <th>번호</th>
-                        <th>제품명</th>
-                        <th>유통기한</th>
-                        <th>분류코드</th>
-                        <th></th> {/* 삭제 버튼 열 추가 */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tableRows}
-                    </tbody>
-                    </table>
-                    <button onClick={() => this.closeOutput()}>닫기</button>
-                </div>
-                )}
+                    <div className="output-container">
+                        <h3>제품 정보</h3>
+                        <button onClick={() => this.handleDeleteAll()}>전체 삭제</button> {/* 전체 삭제 버튼 추가 */}
+                        <table className="output-table">
+                        <thead>
+                            <tr>
+                            <th>번호</th>
+                            <th>제품명</th>
+                            <th>유통기한</th>
+                            <th>분류코드</th>
+                            <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>{tableRows}</tbody>
+                        </table>
+                        <button onClick={() => this.closeOutput()}>닫기</button>
+                    </div>
+                    )}
             </div>
             
             

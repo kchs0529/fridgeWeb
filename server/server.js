@@ -53,7 +53,7 @@ app.post('/saveData', (req, res) => {
 
 //모든 데이터 가져오기
 app.get('/getAllData', (req, res) => {
-    const sql = "SELECT productName, expirationDate, categoryCode FROM products";
+    const sql = "SELECT id, productName, expirationDate, categoryCode FROM products ORDER BY expirationDate ASC";
     db.query(sql, (err, result) => {
         if (err) {
             console.error('데이터 조회 오류:', err);
@@ -63,6 +63,7 @@ app.get('/getAllData', (req, res) => {
 
         // expirationDate를 한국 시간대로 변환
         const formattedResult = result.map(item => ({
+            id:item.id,
             productName: item.productName,
             expirationDate: new Date(item.expirationDate).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' })
                 .replace(/\. /g, '-').replace(/\.$/, ''),
@@ -76,7 +77,7 @@ app.get('/getAllData', (req, res) => {
 //선택한 데이터 가져오기
 app.get('/getDataByDate', (req, res) => {
     const { selectedDate } = req.query; // 쿼리 매개변수로 받은 선택한 날짜
-    const sql = "SELECT id,productName, expirationDate, categoryCode FROM products WHERE selectedDate = ?";
+    const sql = "SELECT id,productName, expirationDate, categoryCode FROM products WHERE selectedDate = ? ORDER BY expirationDate ASC";
     console.log("selectedDate:", selectedDate);
     db.query(sql, [selectedDate], (err, result) => {
         if (err) {
@@ -126,6 +127,24 @@ app.delete('/deleteData', (req, res) => {
         res.status(200).json({ message: "데이터 삭제 성공" });
     });
 });
+
+//선택한 날짜의 데이터 전체 삭제
+app.delete('/deleteAllDataByDate', (req, res) => {
+    const { selectedDate } = req.body;
+  
+    // 선택된 날짜에 해당하는 모든 데이터를 삭제하는 쿼리 작성
+    const sql = 'DELETE FROM products WHERE selectedDate = ?';
+  
+    db.query(sql, [selectedDate], (err, result) => {
+      if (err) {
+        console.error('데이터 삭제 오류:', err);
+        return res.status(500).json({ message: '데이터 삭제에 실패하였습니다.' });
+      }
+  
+      console.log('데이터 삭제 성공');
+      res.status(200).json({ message: '데이터 삭제 성공' });
+    });
+  });
 
 //검색
 app.get('/getDataBySearch', (req, res) => {

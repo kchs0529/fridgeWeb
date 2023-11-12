@@ -6,7 +6,7 @@ import { Alert } from 'react-native';
 
 
 export default function App() {
-  const uri = "http://192.168.55.179";
+  const uri = "http://192.168.55.179";//이 부분을 자신의 ip로 변경해야 함
   // 앱이 시작될 때 유통기한을 확인하는 함수
   const checkExpirationDates = async () => {
     try {
@@ -14,15 +14,15 @@ export default function App() {
       const products = await response.json();
 
       const today = new Date();
-      today.setDate(today.getDate()-1);
+      today.setHours(0, 0, 0, 0);
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-  
+      
       let isProductExpiring = false;
-  
+    
       for (const product of products) {
         const expirationDate = new Date(product.expirationDate);
-        if (expirationDate > today && expirationDate <= tomorrow) {
+        if (expirationDate >= today && expirationDate <= tomorrow) {
           isProductExpiring = true;
           break;
         }
@@ -32,7 +32,7 @@ export default function App() {
         const expiringProducts = products
           .filter((product) => {
             const expirationDate = new Date(product.expirationDate);
-            return expirationDate > today && expirationDate <= tomorrow;
+            return expirationDate >= today && expirationDate <= tomorrow;
           })
           .map((product) => product.productName);
       
@@ -68,13 +68,9 @@ export default function App() {
     <View style={styles.container}>
       <WebView
         source={{ uri: uri+':3001' }}
-        // Mixed content(보안되지 않은 HTTP 요소)를 항상 허용합니다.
         mixedContentMode="always" 
-        // JavaScript 실행을 허용합니다.
         javaScriptEnabled={true} 
-        // DOM 저장소를 활성화합니다.
         domStorageEnabled={true} 
-        // 모든 원본을 허용하는 원본 허용 목록을 설정합니다.
         originWhitelist={['http://localhost:3000', 'http://192.168.55.179:3001']} 
       />
       <StatusBar style="auto" />
