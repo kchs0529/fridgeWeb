@@ -12,7 +12,7 @@ class BlueToothInput extends React.Component {
     handleSubmit = (e) => {
       e.preventDefault();
   
-      const [productName, expirationDate, categoryCodeString] = this.state.input.split(',');
+      const [productName, expirationDate, categoryCodeString] = this.state.input.split(' ');
       const categoryCode = parseInt(categoryCodeString, 10);
   
       // categoryCode 검증
