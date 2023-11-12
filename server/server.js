@@ -175,37 +175,37 @@ function getKoreanDate() {
     return now.toISOString().slice(0, 10); // YYYY-MM-DD 형식
 }
 
-// 블루투스 데이터 수신 및 데이터베이스 저장 로직
-serial.on('found', function(address, name) {
-    serial.findSerialPortChannel(address, function(channel) {
-        serial.connect(address, channel, function() {
-            console.log('블루투스 연결 성공:', name);
+// // 블루투스 데이터 수신 및 데이터베이스 저장 로직
+// serial.on('found', function(address, name) {
+//     serial.findSerialPortChannel(address, function(channel) {
+//         serial.connect(address, channel, function() {
+//             console.log('블루투스 연결 성공:', name);
 
-            serial.on('data', function(data) {
-                const receivedData = data.toString();
-                console.log('수신된 데이터:', receivedData);
+//             serial.on('data', function(data) {
+//                 const receivedData = data.toString();
+//                 console.log('수신된 데이터:', receivedData);
 
-                // 받은 데이터를 ','로 구분하여 각 변수에 할당
-                const [productName, expirationDate, categoryCode] = receivedData.split(',');
+//                 // 받은 데이터를 ','로 구분하여 각 변수에 할당
+//                 const [productName, expirationDate, categoryCode] = receivedData.split(',');
 
-                // selectedDate에 한국 시간대의 오늘 날짜를 설정
-                const selectedDate = getKoreanDate();
+//                 // selectedDate에 한국 시간대의 오늘 날짜를 설정
+//                 const selectedDate = getKoreanDate();
 
-                // 데이터베이스에 데이터 저장
-                const sql = "INSERT INTO products (productName, expirationDate, categoryCode, selectedDate) VALUES (?, ?, ?, ?)";
-                db.query(sql, [productName, expirationDate, categoryCode, selectedDate], (err, result) => {
-                    if (err) {
-                        console.error('데이터베이스 저장 오류:', err);
-                        return;
-                    }
-                    console.log('데이터가 성공적으로 저장되었습니다.');
-                });
-            });
-        }, function () {
-            console.log('블루투스 연결을 실패했습니다.');
-        });
-    });
-});
+//                 // 데이터베이스에 데이터 저장
+//                 const sql = "INSERT INTO products (productName, expirationDate, categoryCode, selectedDate) VALUES (?, ?, ?, ?)";
+//                 db.query(sql, [productName, expirationDate, categoryCode, selectedDate], (err, result) => {
+//                     if (err) {
+//                         console.error('데이터베이스 저장 오류:', err);
+//                         return;
+//                     }
+//                     console.log('데이터가 성공적으로 저장되었습니다.');
+//                 });
+//             });
+//         }, function () {
+//             console.log('블루투스 연결을 실패했습니다.');
+//         });
+//     });
+// });
 
 serial.inquire();
 
