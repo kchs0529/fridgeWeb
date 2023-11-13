@@ -22,7 +22,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// POST 요청을 처리하는 라우트 추가
+//저장 
 app.post('/saveData', (req, res) => {
     console.log("POST 요청이 도착했습니다.");
 

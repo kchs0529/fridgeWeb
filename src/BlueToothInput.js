@@ -12,7 +12,7 @@ class BlueToothInput extends React.Component {
     handleSubmit = (e) => {
       e.preventDefault();
   
-      const [productName, expirationDate, categoryCodeString] = this.state.input.split(' ');
+      const [productName, expirationDate, categoryCodeString] = this.state.input.split('/');
       const categoryCode = parseInt(categoryCodeString, 10);
   
       // categoryCode 검증
@@ -58,7 +58,7 @@ class BlueToothInput extends React.Component {
             className='BlueToothInput-text'
             value={this.state.input}
             onChange={this.handleChange}
-            placeholder="예: apple,2023-11-14,3"
+            placeholder="예: apple/2023-11-14/3"
           />
           <button className="BlueToothInput-button"type="submit">데이터 저장</button>
         </form>

@@ -30,12 +30,12 @@ const SearchResults = () => {
         <tbody>
           {searchResults.map((item, index) => (
             <tr key={index}>
-              <td>{item.productName}</td>
+              <td style={{color:'black'}}>{item.productName}</td>
               <td>{item.expirationDate}</td>
               <td>{item.categoryCode}</td>
             </tr>
           ))}
-        </tbody>
+        </tbody> 
       </table>
       <button onClick={() => navigate('/')}>홈으로</button>
     </div>

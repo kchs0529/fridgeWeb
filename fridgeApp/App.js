@@ -14,15 +14,28 @@ export default function App() {
       const products = await response.json();
 
       const today = new Date();
+      const utcOffset = 9 * 60; // 한국 표준시간대는 UTC+9
+      today.setMinutes(today.getMinutes() + utcOffset);
+
+      // 시간을 00:00:00으로 설정
+      today.setDate(today.getDate()-1);
       today.setHours(0, 0, 0, 0);
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      // 내일 계산
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 2);
+
+      // 시간을 00:00:00으로 설정
+      tomorrow.setHours(0, 0, 0, 0); 
       
-      let isProductExpiring = false;
-    
+      let isProductExpiring = false; 
+       
+      console.log(today); 
+      console.log(tomorrow);
       for (const product of products) {
         const expirationDate = new Date(product.expirationDate);
         if (expirationDate >= today && expirationDate <= tomorrow) {
+          console.log(expirationDate); 
           isProductExpiring = true;
           break;
         }
