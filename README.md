@@ -20,6 +20,6 @@
 해결 방안 : 서버를 실행하지 않았을 시 생겼던 오류 서버를 먼저 키면 생기지 않는다.
 
 2. CORS (Cross-Origin Resource Sharing) 문제
-react-native webview를 활용하여 앱으로 웹을 실행했을때 cors로 인해 데이터 저장,조회,삭제 등 PORT나 GET이 실행 되지 않는 문제,React 앱이 데이터를 가져 오려는 서버 또는 API와 다른 도메인 또는 포트에서 실행 중인 경우 생길 수 있다.
+react-native webview를 활용하여 앱으로 웹을 실행했을때 cors로 인해 데이터 저장,조회,삭제 등 POST나 GET이 실행 되지 않는 문제,React 앱이 데이터를 가져 오려는 서버 또는 API와 다른 도메인 또는 포트에서 실행 중인 경우 생길 수 있다.
 
 해결 방안 : package.json에 "proxy" : "http://localhost:3000"를 추가한다. React 앱이 API 서버로의 요청을 보낼 때, 요청이 자동으로 로컬 서버로 라우팅되어 CORS 문제를 해결
